@@ -38,7 +38,7 @@ class Producto(Resource):
             return producto.to_json(), 201
         
         except:
-            return "Empty", 404
+            return "Bad request", 400
         
 # ELIMINAR UN PRODUCTO EN ESPECÍFICO (Sólo admin)  
     def delete(self, id):
@@ -51,7 +51,7 @@ class Producto(Resource):
             db.session.delete(producto)
             db.session.commit()
 
-        except: "Empty", 404
+        except: "Bad request", 400
 
 
 

@@ -4,6 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class Usuario(db.Model):
 
+    # Columnas de la tabla Productos-compras de la DB.
     id = db.Column(db.Integer, primary_key = True)
     nombre = db.Column(db.String(50), nullable = False)
     apellido = db.Column(db.String(50), nullable = False)
@@ -32,6 +33,8 @@ class Usuario(db.Model):
     def __repr__(self):
         return f'{self.nombre}'
     
+
+    # Convertir información del usuario a un Json
     def to_json(self):
         usuario_json = {
             'id': self.id,
@@ -44,6 +47,8 @@ class Usuario(db.Model):
         }
         return usuario_json
     
+
+    # Recibir un usuario como dato externo desde un Json
     @staticmethod
     def from_json(usuario_json):
         id = usuario_json.get('id')

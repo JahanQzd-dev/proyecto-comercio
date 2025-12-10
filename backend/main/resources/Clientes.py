@@ -70,7 +70,7 @@ class Cliente(Resource):
                 return "Unauthorized", 401
         
         else:
-            return "Vacío", 404
+            return "Not found", 404
        
         
 # MODIFICAR CLIENTE ESPECÍFICO (Sólo admin y el mismo usuario)
@@ -88,11 +88,11 @@ class Cliente(Resource):
 
         # Error si el usuaro solicitado NO es cliente
         if cliente.role != "cliente":
-            return "Vacio", 404
+            return "Not found", 404
         
         # Error si el usuario actual no es dueño del id o no es admin
         if current_user_id != cliente.id and current_role != "admin":
-            return "Vacio", 401
+            return "Unauthorized", 401
 
         # LÓGICA DE MODIFICACIÓN DE CLIENTE:  
         campos_permitidos = ["nombre", "apellido", "email", "telefono"]
@@ -129,4 +129,4 @@ class Cliente(Resource):
             return "Cliente eliminado", 201
         
         except:
-            return "Vacío", 404
+            return "Bad request", 400

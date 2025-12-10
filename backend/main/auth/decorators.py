@@ -2,6 +2,7 @@ from .. import jwt
 from flask_jwt_extended import verify_jwt_in_request, get_jwt
 from main.models import UsuarioModel
 
+# Decorador para proteger rutas y limitar el acceso a ciertos roles
 def role_required(roles):
     def decorator(function):
         def wrapper(*args, **kwargs):
@@ -22,10 +23,14 @@ def role_required(roles):
         return wrapper
     return decorator
 
-
+# Cargar claims adicionales al token
 @jwt.additional_claims_loader
 def add_claims_to_access_token(user_id):
-    usuario = UsuarioModel.query.get(int(user_id))
+    
+    # Buscar usuario en la base de datos
+    usuario = UsuarioModel.query.get(int(user_id))  
+    
+    # Retornar información que irá dentro del JWT
     return {
         "id": usuario.id,
         "role": usuario.role,

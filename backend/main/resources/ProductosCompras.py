@@ -40,7 +40,7 @@ class ProductoCompra(Resource):
             return "Eliminado", 201
         
         except:
-            return "error", 404
+            return "Bad request", 400
         
 
 
@@ -71,7 +71,7 @@ class ProductosCompras(Resource):
             return producto_compra.to_json(), 201
         
         except:
-            return "error", 400
+            return "Bad request", 400
     
 
 # OBTENER PRODUCTOS-COMPRAS (Sólo admin y cliente dueño de las compras)

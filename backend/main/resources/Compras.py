@@ -46,7 +46,7 @@ class Compra(Resource):
             return compra.to_json(), 201
         
         except:
-            return "Vacio", 404
+            return "Bad request", 400
         
 
 # ELIMINAR COMPRA EN ESPECÍFICO (Sólo admin)
@@ -63,7 +63,7 @@ class Compra(Resource):
             return "Compra eliminada", 204
         
         except:
-            return "Vacio", 404
+            return "Bad request", 400
 
 
 class Compras(Resource):

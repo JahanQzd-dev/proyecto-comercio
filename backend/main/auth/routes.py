@@ -4,12 +4,17 @@ from main.models import UsuarioModel
 from flask_jwt_extended import create_access_token
 from main.mail.functions import send_mail
 
+# Definición del Blueprint
 auth = Blueprint("auth", __name__, url_prefix = "/auth")
 
+# LÓGICA PARA LOGIN
 @auth.route("/login", methods = ["POST"])
 def login():
+
+    # Buscar el usuario con el email ingresado
     usuario = db.session.query(UsuarioModel).filter(UsuarioModel.email == request.get_json().get("email")).first_or_404()
 
+    # Validación de contraseña
     if usuario.validate_password(request.get_json().get("password")):
         access_token = create_access_token(identity = str(usuario.id))
 
@@ -25,16 +30,23 @@ def login():
     else:
         return "Incorrect password", 401
 
+
+# LÓGICA PARA REGISTRARSE
 @auth.route("/register", methods = ["POST"])
 def register():
+    
+    # Crear el objeto usuario con la información dada en el json
     usuario = UsuarioModel.from_json(request.get_json())
 
+    # Verificar si el correo ya existe
     exist = db.session.query(UsuarioModel).filter(UsuarioModel.email == usuario.email).scalar() is not None
 
     if exist:
         return "Duplicated email", 409
     
     else:
+
+        # Actualización de la base de datos
         try:
             db.session.add(usuario)
             db.session.commit()

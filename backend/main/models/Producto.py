@@ -2,6 +2,7 @@ from .. import db
 
 class Producto(db.Model):
 
+    # Columnas de la tabla Productos de la DB.
     id = db.Column(db.Integer, primary_key = True)
     nombre = db.Column(db.String(100), nullable = False)
     precio = db.Column(db.Integer, nullable = False)
@@ -13,6 +14,8 @@ class Producto(db.Model):
     def __repr__(self):
         return f"Producto: {self.nombre}"
     
+
+    # Convertir información del producto a un Json
     def to_json(self):
         producto_json = {
             'id': self.id,
@@ -24,6 +27,8 @@ class Producto(db.Model):
         }
         return producto_json
     
+
+    # Recibir un producto como dato externo desde un Json
     @staticmethod
     def from_json(producto_json):
         id = producto_json.get('id')

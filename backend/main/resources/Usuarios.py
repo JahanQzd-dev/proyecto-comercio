@@ -18,16 +18,12 @@ class Usuario(Resource):
         current_user_id = int(get_jwt_identity())
         claims = get_jwt()
         current_role = claims["role"]
-
-        if usuario.role == "cliente":   # IF: Si el usuario que estamos consultando es un cliente
-            
-            if current_user_id == usuario.id or current_role == "admin":    # IF: Si quien hace la consulta es el mismo cliente o un admin
+          
+        if current_user_id == usuario.id or current_role == "admin":    # IF: Si quien hace la consulta es el mismo cliente o un admin
                 return usuario.to_json(), 201
-            else:
-                return "Unauthorized", 401
-        
         else:
-            return "Vacío", 404        
+                return "Unauthorized", 401
+              
         
         
 # ELIMINAR USUARIO EN ESPECÍFICO (Sólo admin)    
@@ -44,7 +40,7 @@ class Usuario(Resource):
             return "Usuario eliminado", 201
         
         except:
-            return "Vacío", 404
+            return "Bad request", 400
         
 
 # MODIFICAR USUARIO EN ESPECÍFICO (Sólo admin y el mismo usuario)    
@@ -62,7 +58,7 @@ class Usuario(Resource):
 
         # Error si el usuario actual no es dueño del id o no es admin
         if current_user_id != usuario.id and current_role != "admin":
-            return "Vacio", 401
+            return "Unauthorized", 401
         
         # LÓGICA DE MODIFICACIÓN DE USUARIO:
         campos_permitidos = ["nombre", "apellido", "email", "telefono"]
@@ -82,7 +78,7 @@ class Usuario(Resource):
             return usuario.to_json(), 201
         
         except:
-            return "Vacío", 404
+            return "Bad request", 400
 
 class Usuarios(Resource):
     

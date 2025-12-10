@@ -2,6 +2,7 @@ from .. import db
 
 class ProductoCompra(db.Model):
 
+    # Columnas de la tabla Productos-compras de la DB.
     id = db.Column(db.Integer, primary_key = True)
     producto_id = db.Column(db.Integer, db.ForeignKey('producto.id'), nullable = False)
     producto = db.relationship('Producto', back_populates = "productoscompras", uselist = False, single_parent = True)
@@ -11,6 +12,8 @@ class ProductoCompra(db.Model):
     def __repr__(self):
         return f"Producto-Compra: {self.producto.to_json()}"
     
+
+    # Convertir información del producto-compra a un Json
     def to_json(self):
         productocompra_json = {
             'id': self.id,
@@ -19,6 +22,8 @@ class ProductoCompra(db.Model):
         }
         return productocompra_json
     
+
+    # Recibir un producto-compra como dato externo desde un Json
     def from_json(productocompra_json):
         id = productocompra_json.get('id')
         producto_id = productocompra_json.get('producto_id')
